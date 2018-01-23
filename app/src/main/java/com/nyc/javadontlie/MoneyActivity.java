@@ -20,7 +20,7 @@ import com.nyc.javadontlie.moneyModel.LogArrayModel;
 
 import java.util.ArrayList;
 
-public class MoneyActivity extends AppCompatActivity{
+public class MoneyActivity extends AppCompatActivity implements View.OnClickListener{
     private EditText input,output;
     private TextView amount;
     private Button inputEnter, outputEnter;
@@ -32,41 +32,23 @@ public class MoneyActivity extends AppCompatActivity{
     private Bundle bundle;
     private FrameLayout frameLayout;
     LoggingFragment fragment;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_money);
-        Intent intent = getIntent();
+        setFields();
+        setFragment();
+        setArrayListFromSharedPreference();
+        setAmount();
+        implementOnClicks();
 
-        input = findViewById(R.id.input_amount);
-        output = findViewById(R.id.output_amount);
-        amount = findViewById(R.id.money_amount);
-        inputEnter = findViewById(R.id.input_enter);
-        outputEnter = findViewById(R.id.output_enter);
-        frameLayout = findViewById(R.id.fragment_container);
-        bundle = new Bundle();
-        bundle.putString(Constants.LOGGING_FRAG_KEY, gameName);
-        gameInfo = getApplicationContext().getSharedPreferences("Game Money Activity",MODE_PRIVATE);
-        logArrayList = new ArrayList<>();
-        fragment = (LoggingFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (fragment == null){
-            fragment = new LoggingFragment();
-        }
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.fragment,fragment);
-        fragment.setArguments(bundle);
 
-        transaction.commit();
-        if (gameInfo.getString("logArrayList" + gameName,null) != null){
-            String logArrayString = gameInfo.getString("logArrayList" + gameName, gameName);
-            LogArrayModel logArrayModel = new Gson().fromJson(logArrayString,LogArrayModel.class);
-            logArrayList = logArrayModel.getArrayList();
-        }
 
-        gameName = intent.getStringExtra("name");
-        amountMoney = Integer.parseInt(gameInfo.getString(gameName,"0"));
-        amount.setText(String.valueOf(amountMoney));
+    }
+
+    private void implementOnClicks() {
         inputEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,10 +98,48 @@ public class MoneyActivity extends AppCompatActivity{
                 }
             }
         });
-
-
-
     }
+
+    private void setArrayListFromSharedPreference() {
+        if (gameInfo.getString("logArrayList" + gameName,null) != null){
+            String logArrayString = gameInfo.getString("logArrayList" + gameName, gameName);
+            LogArrayModel logArrayModel = new Gson().fromJson(logArrayString,LogArrayModel.class);
+            logArrayList = logArrayModel.getArrayList();
+        }
+    }
+
+    private void setFields() {
+        intent = getIntent();
+        gameName = intent.getStringExtra("name");
+        input = findViewById(R.id.input_amount);
+        output = findViewById(R.id.output_amount);
+        amount = findViewById(R.id.money_amount);
+        inputEnter = findViewById(R.id.input_enter);
+        outputEnter = findViewById(R.id.output_enter);
+        frameLayout = findViewById(R.id.fragment_container);
+        bundle = new Bundle();
+        bundle.putString(Constants.LOGGING_FRAG_KEY, gameName);
+        gameInfo = getApplicationContext().getSharedPreferences("Game Money Activity",MODE_PRIVATE);
+        logArrayList = new ArrayList<>();
+    }
+
+    private void setFragment() {
+        fragment = (LoggingFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (fragment == null){
+            fragment = new LoggingFragment();
+        }
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        fragment.setArguments(bundle);
+        transaction.add(R.id.fragment,fragment);
+
+        transaction.commit();
+    }
+
+    private void setAmount() {
+        amountMoney = Integer.parseInt(gameInfo.getString(gameName,"0"));
+        amount.setText(String.valueOf(amountMoney));
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -154,4 +174,10 @@ public class MoneyActivity extends AppCompatActivity{
         }
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+
+        }
+    }
 }
