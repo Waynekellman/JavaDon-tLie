@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.nyc.javadontlie.controller.Adapter;
 import com.nyc.javadontlie.moneyModel.MoneyModel;
 
@@ -41,7 +40,9 @@ public class StartActivity extends AppCompatActivity {
             Map<String, String> pastGame = new HashMap<>();
             pastGame.putAll((Map<? extends String, ? extends String>) gameModels.getAll());
             for (String s:pastGame.keySet()) {
-                moneyModels.add(new MoneyModel(s,Integer.parseInt(pastGame.get(s))));
+                if (!s.contains("StringLog") && !s.contains("logArrayList")) {
+                    moneyModels.add(new MoneyModel(s, Integer.parseInt(pastGame.get(s))));
+                }
             }
         }
         newGame = findViewById(R.id.new_game);

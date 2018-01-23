@@ -1,40 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-        <EditText
-            android:id="@+id/input_amount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:hint="@string/app_name"/>
-        <Button
-            android:id="@+id/input_enter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add"
-            android:layout_gravity="center"/>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/money_layout"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true" >
+
+    <EditText
+        android:id="@+id/input_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:inputType="number"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:hint="@string/app_name" />
+
+    <Button
+        android:id="@+id/input_enter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Add" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="10">
+
         <TextView
             android:id="@+id/money_amount"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:hint="@string/app_name"
-            android:gravity="center"
-            android:textSize="45sp"/>
-        <Button
-            android:id="@+id/output_enter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:text="subtract"/>
-        <EditText
-            android:id="@+id/output_amount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="10"
             android:gravity="center"
-            android:hint="@string/app_name"/>
+            android:hint="@string/app_name"
+            android:textSize="45sp" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/fragment_container">
+
+        <fragment
+            android:name="com.nyc.javadontlie.LoggingFragment"
+            android:id="@+id/fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        </FrameLayout>
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/output_enter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="subtract" />
+
+    <EditText
+        android:id="@+id/output_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:inputType="number"
+        android:gravity="center"
+        android:hint="@string/app_name" />
 
 </LinearLayout>

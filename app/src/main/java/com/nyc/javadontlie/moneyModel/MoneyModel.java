@@ -7,6 +7,8 @@ package com.nyc.javadontlie.moneyModel;
 public class MoneyModel {
     private String name;
 
+    private int amount;
+
     public MoneyModel() {
     }
 
@@ -18,8 +20,6 @@ public class MoneyModel {
         this.name = name;
         this.amount = amount;
     }
-
-    private int amount;
 
 
     public String getName() {
