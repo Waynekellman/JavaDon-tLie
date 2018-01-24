@@ -18,9 +18,11 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.nyc.javadontlie.moneyModel.LogArrayModel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
-public class MoneyActivity extends AppCompatActivity implements View.OnClickListener{
+public class MoneyActivity extends AppCompatActivity{
     private EditText input,output;
     private TextView amount;
     private Button inputEnter, outputEnter;
@@ -55,7 +57,9 @@ public class MoneyActivity extends AppCompatActivity implements View.OnClickList
                 if (!input.getText().toString().equals("")){
                     amountMoney += Integer.parseInt(input.getText().toString());
                     amount.setText(String.valueOf(amountMoney));
-                    logArrayList.add("Player added: " + input.getText().toString());
+                    String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+                    logArrayList.add(0,timeStamp + " Player added: " + input.getText().toString());
+                    setAdapter();
                     Log.d(TAG,logArrayList.get(logArrayList.size() - 1));
 
                     LogArrayModel logArrayModel = new LogArrayModel();
@@ -79,7 +83,9 @@ public class MoneyActivity extends AppCompatActivity implements View.OnClickList
                 if (!output.getText().toString().equals("")){
                     amountMoney -= Integer.parseInt(output.getText().toString());
                     amount.setText(String.valueOf(amountMoney));
-                    logArrayList.add("Player subtracted: " + output.getText().toString());
+                    String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+                    logArrayList.add(0,timeStamp + " Player subtracted: " + output.getText().toString());
+                    setAdapter();
                     Log.d(TAG,logArrayList.get(logArrayList.size() - 1));
 
                     LogArrayModel logArrayModel = new LogArrayModel();
@@ -98,6 +104,14 @@ public class MoneyActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
         });
+    }
+
+    private void setAdapter() {
+        if (frameLayout.getVisibility() == View.VISIBLE){
+            if (fragment != null) {
+                fragment.setAdapter(logArrayList);
+            }
+        }
     }
 
     private void setArrayListFromSharedPreference() {
@@ -119,7 +133,7 @@ public class MoneyActivity extends AppCompatActivity implements View.OnClickList
         frameLayout = findViewById(R.id.fragment_container);
         bundle = new Bundle();
         bundle.putString(Constants.LOGGING_FRAG_KEY, gameName);
-        gameInfo = getApplicationContext().getSharedPreferences("Game Money Activity",MODE_PRIVATE);
+        gameInfo = getApplicationContext().getSharedPreferences("Game Money Activity" + gameName,MODE_PRIVATE);
         logArrayList = new ArrayList<>();
     }
 
@@ -174,10 +188,5 @@ public class MoneyActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
 
-        }
-    }
 }

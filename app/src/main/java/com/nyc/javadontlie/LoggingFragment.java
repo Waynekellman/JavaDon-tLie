@@ -30,7 +30,6 @@ public class LoggingFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private ArrayList<String> logArrayList;
-    private Bundle bundle = getArguments();
     private LoggingAdapter adapter;
 
     public LoggingFragment() {

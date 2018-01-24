@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.nyc.javadontlie.MoneyActivity;
@@ -53,9 +52,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
                 holder.view.getContext().startActivity(intent);
             }
         });
-        holder.button.setOnClickListener(new View.OnClickListener() {
+        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPreferences sharedPreferences = holder.view.getContext().getSharedPreferences("Game Money Activity" + moneyModels.get(position).getName(),Context.MODE_PRIVATE);
+                sharedPreferences.edit().clear().commit();
                 gameList.edit().remove(moneyModels.get(position).getName()).apply();
                 Intent intent = new Intent(holder.view.getContext(), StartActivity.class);
                 holder.view.getContext().startActivity(intent);
@@ -74,12 +75,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView textView;
         private View view;
-        private Button button;
+        private Button deleteButton;
         public ViewHolder(View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.game_name);
             view = itemView;
-            button = itemView.findViewById(R.id.delete_game);
+            deleteButton = itemView.findViewById(R.id.delete_game);
         }
     }
 }
