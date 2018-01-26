@@ -17,8 +17,10 @@ public class RegisterActivity extends AppCompatActivity {
 
     private static final String TAG = "RegisterActivity";
     private EditText userName, password;
-    private Button submit;
+    private Button submit, clear;
     private AppDatabase db;
+    private User newUser;
+    private List<User> userList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,7 @@ public class RegisterActivity extends AppCompatActivity {
         userName = findViewById(R.id.username);
         password = findViewById(R.id.password);
         submit = findViewById(R.id.submit);
+        clear = findViewById(R.id.clear);
 
         db = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "Users").build();
@@ -36,15 +39,67 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String userNameString = userName.getText().toString();
                 String passwordString = password.getText().toString();
-                User newUser = new User(userNameString,passwordString);
-                db.userDao().insertAll(newUser);
-                List<User> userList = db.userDao().getAll();
-                for (User users : userList) {
-                    Log.d(TAG, "onCreate: " + users.getUserName());
+                newUser = new User(userNameString,passwordString);
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+
+                        db.userDao().insertAll(newUser);
+                        userList = db.userDao().getAll();
+                        for (User users : userList) {
+                            Log.d(TAG, "onCreate: " + users.id + " " + users.getUserName());
+                        }
+                        if (db.userDao().getAll().size() == 0){
+                            Log.d(TAG, "run: " + "List was deleted");
+                        } else {
+                            Log.d(TAG, "run: " + "List is still there");
+                        }
+
+
+                    }
+                });
+                thread.start();
+                try {
+                    thread.join(5);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
 
             }
         });
+
+        clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        userList = db.userDao().getAll();
+                        for (User users : userList) {
+                            Log.d(TAG, "onCreate: " + users.id + " " + users.getUserName());
+                            db.userDao().delete(users);
+                        }
+                        if (db.userDao().getAll().size() == 0){
+                            Log.d(TAG, "run: " + "List was deleted");
+                        }
+
+                    }
+                });
+                thread.start();
+                try {
+                    thread.join(5);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+
+
+
 
 
     }

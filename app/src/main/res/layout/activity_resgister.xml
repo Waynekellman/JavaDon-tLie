@@ -24,5 +24,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="submit"/>
+    <Button
+        android:id="@+id/clear"
+        android:text="clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
