@@ -18,9 +18,13 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.nyc.javadontlie.moneyModel.LogArrayModel;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import io.fotoapparat.Fotoapparat;
+import io.fotoapparat.view.CameraView;
 
 public class MoneyActivity extends AppCompatActivity{
     private EditText input,output;
@@ -35,6 +39,7 @@ public class MoneyActivity extends AppCompatActivity{
     private FrameLayout frameLayout;
     LoggingFragment fragment;
     private Intent intent;
+    private CameraView cameraView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +50,7 @@ public class MoneyActivity extends AppCompatActivity{
         setArrayListFromSharedPreference();
         setAmount();
         implementOnClicks();
-
+        
 
 
     }
@@ -131,6 +136,7 @@ public class MoneyActivity extends AppCompatActivity{
         inputEnter = findViewById(R.id.input_enter);
         outputEnter = findViewById(R.id.output_enter);
         frameLayout = findViewById(R.id.fragment_container);
+        cameraView = findViewById(R.id.camera_view);
         bundle = new Bundle();
         bundle.putString(Constants.LOGGING_FRAG_KEY, gameName);
         gameInfo = getApplicationContext().getSharedPreferences("Game Money Activity" + gameName,MODE_PRIVATE);
@@ -182,6 +188,11 @@ public class MoneyActivity extends AppCompatActivity{
                 } else {
                     frameLayout.setVisibility(View.GONE);
                 }
+                return true;
+            case R.id.camera_icon:
+                Intent intent = new Intent(MoneyActivity.this, CameraActivity.class);
+                intent.putExtra("gameName", gameName);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
