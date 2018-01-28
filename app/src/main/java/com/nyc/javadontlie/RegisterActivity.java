@@ -1,6 +1,7 @@
 package com.nyc.javadontlie;
 
 import android.arch.persistence.room.Room;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -65,6 +66,9 @@ public class RegisterActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
 
             }
         });
