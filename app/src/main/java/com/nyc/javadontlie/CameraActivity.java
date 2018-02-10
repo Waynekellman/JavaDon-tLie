@@ -33,13 +33,13 @@ public class CameraActivity extends AppCompatActivity {
     private void takeFotoPic() {
         Intent intent = getIntent();
         gameName = intent.getStringExtra("gameNames");
-        fotoapparat = new Fotoapparat(CameraActivity.this,cameraView);
+        fotoapparat = new Fotoapparat(CameraActivity.this, cameraView);
         PhotoResult gameBoard = fotoapparat.takePicture();
         gameBoard.toBitmap().whenAvailable(new Function1<BitmapPhoto, Unit>() {
             @Override
             public Unit invoke(BitmapPhoto bitmapPhoto) {
                 String string = new Gson().toJson(bitmapPhoto);
-                Intent intent1 = new Intent(CameraActivity.this,MoneyActivity.class);
+                Intent intent1 = new Intent(CameraActivity.this, MoneyActivity.class);
                 intent1.putExtra("photoTaken", string);
                 startActivity(intent1);
                 return null;

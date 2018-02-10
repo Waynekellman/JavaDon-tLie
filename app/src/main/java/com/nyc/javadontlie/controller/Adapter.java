@@ -29,31 +29,31 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by Wayne Kellman on 1/11/18.
  */
 
-public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
+public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     private static final String TAG = "StarActivityAdapter";
     List<Games> gamesList;
     Activity thisActivity;
     private SharedPreferences sharedPreferences;
     private AppDatabase db;
-    private String userName,password;
+    private String userName, password;
     private User user;
-
 
 
     public Adapter(List<Games> gamesList, Activity thisActivity) {
         this.gamesList = gamesList;
         this.thisActivity = thisActivity;
-        this.sharedPreferences = thisActivity.getSharedPreferences("UserData",MODE_PRIVATE);
+        this.sharedPreferences = thisActivity.getSharedPreferences("UserData", MODE_PRIVATE);
     }
 
     public void setGamesList(List<Games> gamesList) {
         this.gamesList = gamesList;
         notifyDataSetChanged();
     }
+
     private void setUserAndPass() {
-        sharedPreferences  = thisActivity.getApplicationContext().getSharedPreferences("UserData",MODE_PRIVATE);
-        if (sharedPreferences.getString("userName",null) != null){
+        sharedPreferences = thisActivity.getApplicationContext().getSharedPreferences("UserData", MODE_PRIVATE);
+        if (sharedPreferences.getString("userName", null) != null) {
             userName = sharedPreferences.getString("userName", null);
             password = sharedPreferences.getString("password", null);
         }
@@ -63,6 +63,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
         editor.putString("password", password);
         editor.commit();
     }
+
     private void initiateUser() {
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -70,11 +71,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
 
                 db = Room.databaseBuilder(thisActivity.getApplicationContext(),
                         AppDatabase.class, "Users").build();
-                user = db.userDao().findByLogin(userName,password);
-                if (user.getGameList() != null ){
+                user = db.userDao().findByLogin(userName, password);
+                if (user.getGameList() != null) {
                     gamesList = user.getGameList();
-                } else
-                {
+                } else {
                     gamesList = new ArrayList<>();
                 }
                 db.close();
@@ -92,7 +92,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemview,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemview, parent, false);
         setUserAndPass();
         initiateUser();
         return new ViewHolder(view);
@@ -105,7 +105,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(holder.view.getContext(), MoneyActivity.class);
-                intent.putExtra("GameName",gamesList.get(position).getGameName());
+                intent.putExtra("GameName", gamesList.get(position).getGameName());
                 sharedPreferences.edit().putString("GamesName", gamesList.get(position).getGameName()).commit();
                 String gameJson = new Gson().toJson(gamesList.get(position));
                 intent.putExtra("gameIndex", position);
@@ -123,6 +123,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
         });
 
     }
+
     private void deleteGames(final Games games) {
 
         db = Room.databaseBuilder(thisActivity.getApplicationContext(),
@@ -134,13 +135,16 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
                 for (Games g : gamesList) {
                     if (g.getGameName().equals(games.getGameName())) {
                         gamesList.remove(g);
+                        Log.d(TAG, "run: " + gamesList.size());
+                        Log.d(TAG, "run: " + games.getGameName());
+                        user.setGameList(gamesList);
+                        db.userDao().updateUsers(user);
+                        break;
                     }
-                    Log.d(TAG, "run: " + gamesList.size());
-                    Log.d(TAG, "run: " + games.getGameName());
-                    user.setGameList(gamesList);
-                    db.userDao().updateUsers(user);
-                    db.close();
+
                 }
+
+                db.close();
             }
         });
         thread.start();
@@ -152,7 +156,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
     }
 
 
-
     @Override
     public int getItemCount() {
         return gamesList.size();
@@ -162,6 +165,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
         private TextView textView;
         private View view;
         private Button deleteButton;
+
         public ViewHolder(View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.game_name);

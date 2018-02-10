@@ -6,7 +6,6 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import com.nyc.javadontlie.moneyModel.Games;
 import com.nyc.javadontlie.moneyModel.User;
 
 import java.util.List;

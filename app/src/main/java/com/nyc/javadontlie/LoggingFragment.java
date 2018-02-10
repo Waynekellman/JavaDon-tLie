@@ -53,12 +53,12 @@ public class LoggingFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerView_logging);
         adapter = new LoggingAdapter(logArrayList);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayout.VERTICAL,false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayout.VERTICAL, false);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
     }
 
-    public void setAdapter(ArrayList<String> strings){
+    public void setAdapter(ArrayList<String> strings) {
         adapter.setLogArray(strings);
     }
 }
