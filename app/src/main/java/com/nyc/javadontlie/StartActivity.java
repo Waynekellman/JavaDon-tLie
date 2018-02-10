@@ -104,7 +104,7 @@ public class StartActivity extends AppCompatActivity {
         userName = intent.getStringExtra("userName");
         password = intent.getStringExtra("password");
         sharedPreferences  = getApplicationContext().getSharedPreferences("UserData",MODE_PRIVATE);
-        if (sharedPreferences.getString("userName",null) != null){
+        if (sharedPreferences.getString(userName,null) != null){
             userName = sharedPreferences.getString("userName", null);
             password = sharedPreferences.getString("password", null);
         }

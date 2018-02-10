@@ -26,7 +26,7 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_resgister);
+        setContentView(R.layout.activity_register);
         userName = findViewById(R.id.username);
         password = findViewById(R.id.password);
         submit = findViewById(R.id.submit);
@@ -38,37 +38,40 @@ public class RegisterActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String userNameString = userName.getText().toString();
-                String passwordString = password.getText().toString();
-                newUser = new User(userNameString,passwordString);
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
+                if (!userName.getText().toString().equals("") && !password.getText().toString().equals("")) {
+                    String userNameString = userName.getText().toString();
+                    String passwordString = password.getText().toString();
+                    newUser = new User(userNameString, passwordString);
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
 
 
-                        db.userDao().insertAll(newUser);
-                        userList = db.userDao().getAll();
-                        for (User users : userList) {
-                            Log.d(TAG, "onCreate: " + users.id + " " + users.getUserName());
+                            db.userDao().insertAll(newUser);
+                            userList = db.userDao().getAll();
+                            for (User users : userList) {
+                                Log.d(TAG, "onCreate: " + users.id + " " + users.getUserName());
+                            }
+                            if (db.userDao().getAll().size() == 0) {
+                                Log.d(TAG, "run: " + "List was deleted");
+                            } else {
+                                Log.d(TAG, "run: " + "List is still there");
+                            }
+
+
                         }
-                        if (db.userDao().getAll().size() == 0){
-                            Log.d(TAG, "run: " + "List was deleted");
-                        } else {
-                            Log.d(TAG, "run: " + "List is still there");
-                        }
-
-
+                    });
+                    thread.start();
+                    try {
+                        thread.join(5);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                });
-                thread.start();
-                try {
-                    thread.join(5);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    intent.putExtra("fromRegister", true);
+                    startActivity(intent);
+                    finish();
                 }
-                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
 
             }
         });
@@ -85,7 +88,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Log.d(TAG, "onCreate: " + users.id + " " + users.getUserName());
                             db.userDao().delete(users);
                         }
-                        if (db.userDao().getAll().size() == 0){
+                        if (db.userDao().getAll().size() == 0) {
                             Log.d(TAG, "run: " + "List was deleted");
                         }
 
@@ -101,9 +104,6 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         });
-
-
-
 
 
     }

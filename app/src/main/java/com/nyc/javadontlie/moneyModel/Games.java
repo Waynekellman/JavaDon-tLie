@@ -43,7 +43,7 @@ public class Games {
     public ArrayList<String> getLog() {
         if (log.size() >= 1) {
             return log;
-        }else {
+        } else {
             return new ArrayList<>();
         }
     }

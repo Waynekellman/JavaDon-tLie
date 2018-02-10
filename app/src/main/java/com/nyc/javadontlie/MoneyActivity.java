@@ -29,10 +29,10 @@ import java.util.List;
 
 import io.fotoapparat.view.CameraView;
 
-public class MoneyActivity extends AppCompatActivity{
+public class MoneyActivity extends AppCompatActivity {
     private final String TAG = "MoneyActivity";
 
-    private EditText input,output;
+    private EditText input, output;
     private TextView amount;
     private Button inputEnter, outputEnter;
     private String gameName, userName, password;
@@ -57,7 +57,6 @@ public class MoneyActivity extends AppCompatActivity{
         setFragment();
         setAmount();
         implementOnClicks();
-        
 
 
     }
@@ -66,16 +65,16 @@ public class MoneyActivity extends AppCompatActivity{
         inputEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!input.getText().toString().equals("")){
+                if (!input.getText().toString().equals("")) {
                     amountMoney += Integer.parseInt(input.getText().toString());
                     game.setAmount(amountMoney);
                     amount.setText(String.valueOf(amountMoney));
                     String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-                    logArrayList.add(0,timeStamp + " Player added: " + input.getText().toString());
+                    logArrayList.add(0, timeStamp + " Player added: " + input.getText().toString());
                     game.setLog(logArrayList);
                     setAdapter();
                     updateUser();
-                    Log.d(TAG,logArrayList.get(logArrayList.size() - 1));
+                    Log.d(TAG, logArrayList.get(logArrayList.size() - 1));
 
                     LogArrayModel logArrayModel = new LogArrayModel();
                     logArrayModel.setArrayList(logArrayList);
@@ -89,16 +88,16 @@ public class MoneyActivity extends AppCompatActivity{
         outputEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!output.getText().toString().equals("")){
+                if (!output.getText().toString().equals("")) {
                     amountMoney -= Integer.parseInt(output.getText().toString());
                     game.setAmount(amountMoney);
                     amount.setText(String.valueOf(amountMoney));
                     String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-                    logArrayList.add(0,timeStamp + " Player subtracted: " + output.getText().toString());
+                    logArrayList.add(0, timeStamp + " Player subtracted: " + output.getText().toString());
                     game.setLog(logArrayList);
                     setAdapter();
                     updateUser();
-                    Log.d(TAG,logArrayList.get(logArrayList.size() - 1));
+                    Log.d(TAG, logArrayList.get(logArrayList.size() - 1));
 
                     LogArrayModel logArrayModel = new LogArrayModel();
                     logArrayModel.setArrayList(logArrayList);
@@ -112,10 +111,10 @@ public class MoneyActivity extends AppCompatActivity{
         });
     }
 
-    public void updateUser(){
+    public void updateUser() {
         List<Games> gamesList = user.getGameList();
         gamesList.remove(gameIndexInList);
-        gamesList.add(gameIndexInList,game);
+        gamesList.add(gameIndexInList, game);
 
         db = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "Users").build();
@@ -137,7 +136,7 @@ public class MoneyActivity extends AppCompatActivity{
     }
 
     private void setAdapter() {
-        if (frameLayout.getVisibility() == View.VISIBLE){
+        if (frameLayout.getVisibility() == View.VISIBLE) {
             if (fragment != null) {
                 fragment.setAdapter(logArrayList);
             }
@@ -147,12 +146,12 @@ public class MoneyActivity extends AppCompatActivity{
 
     private void setFields() {
         intent = getIntent();
-        sharedPreferences  = getApplicationContext().getSharedPreferences("UserData",MODE_PRIVATE);
-        if (sharedPreferences.getString("userName",null) != null){
+        sharedPreferences = getApplicationContext().getSharedPreferences("UserData", MODE_PRIVATE);
+        if (sharedPreferences.getString("userName", null) != null) {
             userName = sharedPreferences.getString("userName", null);
             password = sharedPreferences.getString("password", null);
         }
-        if (sharedPreferences.getString("GamesName", null) != null){
+        if (sharedPreferences.getString("GamesName", null) != null) {
             gameName = sharedPreferences.getString("GamesName", null);
         } else {
             gameName = intent.getStringExtra("GameName");
@@ -161,7 +160,7 @@ public class MoneyActivity extends AppCompatActivity{
         gameIndexInList = intent.getIntExtra("gameIndex", -1);
         logArrayList = new ArrayList<>();
         String gameJson = intent.getStringExtra("newGame");
-        game = new Gson().fromJson(gameJson,Games.class);
+        game = new Gson().fromJson(gameJson, Games.class);
         logArrayList = game.getLog();
         input = findViewById(R.id.input_amount);
         output = findViewById(R.id.output_amount);
@@ -178,7 +177,7 @@ public class MoneyActivity extends AppCompatActivity{
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                user = db.userDao().findByLogin(userName,password);
+                user = db.userDao().findByLogin(userName, password);
                 db.close();
             }
         });
@@ -194,12 +193,12 @@ public class MoneyActivity extends AppCompatActivity{
 
     private void setFragment() {
         fragment = (LoggingFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (fragment == null){
+        if (fragment == null) {
             fragment = new LoggingFragment();
         }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         fragment.setArguments(bundle);
-        transaction.add(R.id.fragment,fragment);
+        transaction.add(R.id.fragment, fragment);
 
         transaction.commit();
     }
@@ -226,10 +225,9 @@ public class MoneyActivity extends AppCompatActivity{
         output.setEnabled(true);
 
 
-
         switch (item.getItemId()) {
             case R.id.log_text_menu:
-                if (frameLayout.getVisibility() ==View.GONE){
+                if (frameLayout.getVisibility() == View.GONE) {
                     frameLayout.setVisibility(View.VISIBLE);
                     if (fragment != null) {
                         fragment.setAdapter(logArrayList);

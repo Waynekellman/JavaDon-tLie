@@ -5,26 +5,65 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.nyc.javadontlie.LoginActivity">
+    android:background="#000"
+    tools:context="com.nyc.javadontlie.LoginActivity"
+    android:id="@+id/login_layout">
+    <TextView
+        android:id="@+id/user_name_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="User Name"
+        android:textSize="17dp"
+        android:textColor="#fff"
+        android:layout_marginTop="65dp"
+        android:layout_marginBottom="5dp"/>
     <EditText
         android:id="@+id/username_login"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:hint="username"/>
+        android:layout_gravity="center_horizontal"
+        android:background="#fff"
+        android:hint="username"
+        android:layout_marginBottom="15dp"/>
+    <TextView
+        android:id="@+id/password_textview_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#fff"
+        android:textSize="17dp"
+        android:text="password"
+        android:layout_marginBottom="5dp"/>
     <EditText
         android:id="@+id/password_login"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:hint="password"/>
+        android:layout_gravity="center_horizontal"
+        android:background="#fff"
+        android:inputType="textPassword"
+        android:hint="password"
+        android:layout_marginBottom="15dp"/>
+    <CheckBox
+        android:id="@+id/save_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="#fff"
+        android:text="Save Password"
+        android:layout_marginBottom="15dp" />
     <Button
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="login"/>
+        android:layout_gravity="center_horizontal"
+        android:text="login"
+        android:layout_marginBottom="15dp"/>
     <Button
         android:id="@+id/gotoRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:text="Register"/>
 
 </LinearLayout>

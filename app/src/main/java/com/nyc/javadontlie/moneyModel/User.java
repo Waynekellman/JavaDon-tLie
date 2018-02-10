@@ -71,7 +71,8 @@ public class User {
     }
 
     public void addGameToList(Games newGame){
-        Type type = new TypeToken<List<Games>>(){}.getType();
+        Type type = new TypeToken<List<Games>>() {
+        }.getType();
         List<Games> games =  new Gson().fromJson(gameListJson,type);
         if (games != null) {
             games.add(newGame);
