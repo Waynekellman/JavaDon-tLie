@@ -168,7 +168,6 @@ public class MoneyActivity extends AppCompatActivity {
         inputEnter = findViewById(R.id.input_enter);
         outputEnter = findViewById(R.id.output_enter);
         frameLayout = findViewById(R.id.fragment_container);
-        cameraView = findViewById(R.id.camera_view);
         bundle = new Bundle();
         bundle.putString(Constants.LOGGING_FRAG_KEY, gameName);
 
@@ -235,14 +234,6 @@ public class MoneyActivity extends AppCompatActivity {
                 } else {
                     frameLayout.setVisibility(View.GONE);
                 }
-                return true;
-            case R.id.camera_icon:
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("GamesName", gameName);
-                editor.commit();
-                Intent intent = new Intent(MoneyActivity.this, CameraActivity.class);
-                intent.putExtra("gameName", gameName);
-                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

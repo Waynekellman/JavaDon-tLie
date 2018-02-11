@@ -48,21 +48,17 @@ public class LoginActivity extends AppCompatActivity {
         linearLayout = findViewById(R.id.login_layout);
         login = findViewById(R.id.login_button);
         register = findViewById(R.id.gotoRegister);
-        sharedPreferences = getApplicationContext().getSharedPreferences("LoginScreen", MODE_PRIVATE);
+        sharedPreferences = getApplicationContext().getSharedPreferences("LoginPass", MODE_PRIVATE);
 
         userName.setText("");
         password.setText("");
-        Intent intent = getIntent();
-        boolean fromRegister = intent.getBooleanExtra("fromRegister", false);
-        if (!fromRegister) {
 
-            if (sharedPreferences.getString("LoginPass", null) != null) {
-                checkBox.setChecked(true);
-                String userNameShared = sharedPreferences.getString("userName", null);
-                String passwordShared = sharedPreferences.getString("password", null);
-                userName.setText(userNameShared);
-                password.setText(passwordShared);
-            }
+        if (sharedPreferences.getBoolean("saveUserAndPass", false)) {
+            checkBox.setChecked(true);
+            String userNameShared = sharedPreferences.getString("userName", null);
+            String passwordShared = sharedPreferences.getString("password", null);
+            userName.setText(userNameShared);
+            password.setText(passwordShared);
         }
 
         db = Room.databaseBuilder(getApplicationContext(),
@@ -101,6 +97,8 @@ public class LoginActivity extends AppCompatActivity {
                             intent.putExtra("password", passwordForLogin);
                             if (checkBox.isChecked()) {
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.clear();
+                                editor.putBoolean("saveUserAndPass", true);
                                 editor.putString("userName", username);
                                 editor.putString("password", passwordForLogin);
                                 editor.commit();
@@ -126,6 +124,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        Log.d(TAG, "onCreate: " + "loginActivity ran");
+        Log.d(TAG, "onResume: " + "loginActivity ran");
     }
 }
