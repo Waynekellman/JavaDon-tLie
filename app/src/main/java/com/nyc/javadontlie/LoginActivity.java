@@ -36,14 +36,29 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        userName = findViewById(R.id.username_login);
+        password = findViewById(R.id.password_login);
+        if (savedInstanceState != null) {
+            userName.setText(savedInstanceState.getString("userName", null));
+            password.setText(savedInstanceState.getString("password", null));
+        }
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (!userName.getText().toString().equals("")) {
+            outState.putString("userName", userName.getText().toString());
+        }
+        if (!password.getText().toString().equals("")) {
+            outState.putString("password", password.getText().toString());
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        userName = findViewById(R.id.username_login);
-        password = findViewById(R.id.password_login);
         checkBox = findViewById(R.id.save_password);
         linearLayout = findViewById(R.id.login_layout);
         login = findViewById(R.id.login_button);
