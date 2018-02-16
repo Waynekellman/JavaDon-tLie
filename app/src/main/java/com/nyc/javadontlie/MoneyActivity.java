@@ -48,17 +48,41 @@ public class MoneyActivity extends AppCompatActivity {
     private AppDatabase db;
     private SharedPreferences sharedPreferences;
     private int gameIndexInList;
+    private String gameJson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_money);
+
+        intent = getIntent();
+        if (savedInstanceState != null) {
+            gameIndexInList = savedInstanceState.getInt("gameIndex", intent.getIntExtra("gameIndex", -1));
+            gameJson = savedInstanceState.getString("newGame");
+        } else {
+            gameIndexInList = intent.getIntExtra("gameIndex", -1);
+            gameJson = intent.getStringExtra("newGame");
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         setFields();
         setFragment();
         setAmount();
         implementOnClicks();
+    }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if ( intent.getIntExtra("gameIndex", -1) != -1){
 
+            outState.putInt("gameIndex",intent.getIntExtra("gameIndex", -1));
+            outState.putString("newGame",intent.getStringExtra("newGame"));
+        }
     }
 
     private void implementOnClicks() {
@@ -145,7 +169,7 @@ public class MoneyActivity extends AppCompatActivity {
     }
 
     private void setFields() {
-        intent = getIntent();
+
         sharedPreferences = getApplicationContext().getSharedPreferences("UserData", MODE_PRIVATE);
         if (sharedPreferences.getString("userName", null) != null) {
             userName = sharedPreferences.getString("userName", null);
@@ -157,9 +181,7 @@ public class MoneyActivity extends AppCompatActivity {
             gameName = intent.getStringExtra("GameName");
         }
 
-        gameIndexInList = intent.getIntExtra("gameIndex", -1);
         logArrayList = new ArrayList<>();
-        String gameJson = intent.getStringExtra("newGame");
         game = new Gson().fromJson(gameJson, Games.class);
         logArrayList = game.getLog();
         input = findViewById(R.id.input_amount);
@@ -168,7 +190,6 @@ public class MoneyActivity extends AppCompatActivity {
         inputEnter = findViewById(R.id.input_enter);
         outputEnter = findViewById(R.id.output_enter);
         frameLayout = findViewById(R.id.fragment_container);
-        cameraView = findViewById(R.id.camera_view);
         bundle = new Bundle();
         bundle.putString(Constants.LOGGING_FRAG_KEY, gameName);
 
@@ -192,14 +213,10 @@ public class MoneyActivity extends AppCompatActivity {
     }
 
     private void setFragment() {
-        fragment = (LoggingFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (fragment == null) {
-            fragment = new LoggingFragment();
-        }
+        fragment = new LoggingFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         fragment.setArguments(bundle);
-        transaction.add(R.id.fragment, fragment);
-
+        transaction.replace(R.id.fragment, fragment);
         transaction.commit();
     }
 
@@ -235,14 +252,6 @@ public class MoneyActivity extends AppCompatActivity {
                 } else {
                     frameLayout.setVisibility(View.GONE);
                 }
-                return true;
-            case R.id.camera_icon:
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("GamesName", gameName);
-                editor.commit();
-                Intent intent = new Intent(MoneyActivity.this, CameraActivity.class);
-                intent.putExtra("gameName", gameName);
-                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.nyc.javadontlie.StartActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#000">
     <LinearLayout
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -14,7 +15,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="#000">
         <Button
             android:id="@+id/new_game"
             android:layout_width="wrap_content"
@@ -26,16 +28,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="New Game Name"
+            android:background="#fff"
             android:textSize="14sp"
-            android:layout_weight="20"/>
+            android:layout_weight="20"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"/>
         <EditText
             android:id="@+id/money_amount_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="Enter Start Amount"
             android:inputType="number"
+            android:background="#fff"
             android:textSize="14sp"
-            android:layout_weight="20"/>
+            android:layout_weight="20"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"/>
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

@@ -5,30 +5,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#000"
     tools:context="com.nyc.javadontlie.RegisterActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="User Name"
+        android:textSize="17dp"
+        android:textColor="#fff"
+        android:layout_marginTop="65dp"
+        android:layout_marginBottom="5dp"/>
     <EditText
         android:id="@+id/username"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:hint="Enter your user name"/>
-
+        android:layout_gravity="center_horizontal"
+        android:background="#fff"
+        android:hint="username"
+        android:layout_marginBottom="15dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#fff"
+        android:textSize="17dp"
+        android:text="password"
+        android:layout_marginBottom="5dp"/>
     <EditText
         android:id="@+id/password"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="#fff"
         android:inputType="textPassword"
-        android:hint="enter a password"/>
-
+        android:hint="password"
+        android:layout_marginBottom="15dp"/>
     <Button
         android:id="@+id/submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="submit"/>
-    <Button
-        android:id="@+id/clear"
-        android:text="clear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_gravity="center_horizontal"
+        android:text="create new login"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"/>
 
 </LinearLayout>

@@ -5,10 +5,5 @@
         android:id="@+id/log_text_menu"
         android:title="Log"
         app:showAsAction="always|withText"/>
-    <item
-        android:id="@+id/camera_icon"
-        android:title="camera"
-        android:icon="@drawable/ic_action_name"
-        app:showAsAction="always|withText"/>
 
 </menu>

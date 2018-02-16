@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/money_layout"
+    android:background="#000"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true" >
 
@@ -15,6 +16,8 @@
         android:inputType="number"
         android:layout_weight="2"
         android:gravity="center"
+        android:textColor="#fff"
+        android:textColorHint="#fff"
         android:hint="@string/app_name" />
 
     <Button
@@ -37,6 +40,8 @@
             android:layout_weight="10"
             android:gravity="center"
             android:hint="@string/app_name"
+            android:textColor="#fff"
+            android:textColorHint="#fff"
             android:textSize="45sp" />
         <FrameLayout
             android:layout_width="match_parent"
@@ -44,8 +49,7 @@
             android:id="@+id/fragment_container"
             android:visibility="gone">
 
-        <fragment
-            android:name="com.nyc.javadontlie.LoggingFragment"
+        <FrameLayout
             android:id="@+id/fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -66,6 +70,8 @@
         android:layout_weight="2"
         android:inputType="number"
         android:gravity="center"
+        android:textColor="#fff"
+        android:textColorHint="#fff"
         android:hint="@string/app_name" />
 
 </LinearLayout>
