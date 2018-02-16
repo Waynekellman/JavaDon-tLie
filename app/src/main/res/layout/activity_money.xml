@@ -49,8 +49,7 @@
             android:id="@+id/fragment_container"
             android:visibility="gone">
 
-        <fragment
-            android:name="com.nyc.javadontlie.LoggingFragment"
+        <FrameLayout
             android:id="@+id/fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
