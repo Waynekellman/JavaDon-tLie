@@ -3,6 +3,7 @@ package com.nyc.javadontlie;
 import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -49,6 +50,7 @@ public class MoneyActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private int gameIndexInList;
     private String gameJson;
+    private MediaPlayer fxPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +92,7 @@ public class MoneyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!input.getText().toString().equals("")) {
+                    playSound(R.raw.cha_ching);
                     amountMoney += Integer.parseInt(input.getText().toString());
                     game.setAmount(amountMoney);
                     amount.setText(String.valueOf(amountMoney));
@@ -97,7 +100,9 @@ public class MoneyActivity extends AppCompatActivity {
                     logArrayList.add(0, timeStamp + " Player added: " + input.getText().toString());
                     game.setLog(logArrayList);
                     setAdapter();
-                    updateUser();
+                    if (!game.getGameName().equals("")) {
+                        updateUser();
+                    }
                     Log.d(TAG, logArrayList.get(logArrayList.size() - 1));
 
                     LogArrayModel logArrayModel = new LogArrayModel();
@@ -113,6 +118,7 @@ public class MoneyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!output.getText().toString().equals("")) {
+                    playSound(R.raw.cha_ching);
                     amountMoney -= Integer.parseInt(output.getText().toString());
                     game.setAmount(amountMoney);
                     amount.setText(String.valueOf(amountMoney));
@@ -120,7 +126,9 @@ public class MoneyActivity extends AppCompatActivity {
                     logArrayList.add(0, timeStamp + " Player subtracted: " + output.getText().toString());
                     game.setLog(logArrayList);
                     setAdapter();
-                    updateUser();
+                    if (!game.getGameName().equals("")) {
+                        updateUser();
+                    }
                     Log.d(TAG, logArrayList.get(logArrayList.size() - 1));
 
                     LogArrayModel logArrayModel = new LogArrayModel();
@@ -133,6 +141,18 @@ public class MoneyActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void playSound(int _id)
+    {
+        if(fxPlayer != null)
+        {
+            fxPlayer.stop();
+            fxPlayer.release();
+        }
+        fxPlayer = MediaPlayer.create(this, _id);
+        if(fxPlayer != null)
+            fxPlayer.start();
     }
 
     public void updateUser() {
@@ -183,6 +203,9 @@ public class MoneyActivity extends AppCompatActivity {
 
         logArrayList = new ArrayList<>();
         game = new Gson().fromJson(gameJson, Games.class);
+        if (game == null) {
+            game = new Games("",0);
+        }
         logArrayList = game.getLog();
         input = findViewById(R.id.input_amount);
         output = findViewById(R.id.output_amount);
