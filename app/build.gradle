@@ -59,6 +59,8 @@ dependencies {
     // Java8 support for Lifecycles
     implementation "android.arch.lifecycle:common-java8:1.1.0"
 
+    testCompile "org.mockito:mockito-core:2.7.6"
+
 }
 
 
