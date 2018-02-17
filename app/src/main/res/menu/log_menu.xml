@@ -5,5 +5,8 @@
         android:id="@+id/log_text_menu"
         android:title="Log"
         app:showAsAction="always|withText"/>
+    <item
+        android:id="@+id/about_log"
+        android:title="About"/>
 
 </menu>

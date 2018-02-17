@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.nyc.javadontlie.StartActivity"
     android:orientation="vertical"
-    android:background="#000"
+    android:background="#4a138c"
     android:id="@+id/start_main_layout">
     <LinearLayout
         android:focusable="true"
@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="#000">
+        android:background="#12005e">
         <Button
             android:id="@+id/new_game"
             android:layout_width="wrap_content"

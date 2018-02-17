@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:id="@+id/money_layout"
-    android:background="#000"
+    android:background="#7c42bd"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true" >
 
@@ -24,6 +24,9 @@
         android:gravity="center"
         android:textColor="#fff"
         android:textColorHint="#fff"
+        android:background="#7c42bd"
+        android:shadowColor="#fff"
+        android:elevation="10dp"
         android:hint="Addition" />
 
     <Button
@@ -49,6 +52,9 @@
         android:gravity="center"
         android:textColor="#fff"
         android:textColorHint="#fff"
+        android:background="#7c42bd"
+        android:shadowColor="#fff"
+        android:elevation="10dp"
         android:hint="Subtraction" />
 
     </LinearLayout>
@@ -75,8 +81,11 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_gravity="center"
                 android:id="@+id/fragment_container"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:shadowColor="#fff"
+                android:elevation="10dp">
 
                 <FrameLayout
                     android:id="@+id/fragment"
