@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -194,7 +193,7 @@ public class StartActivity extends AppCompatActivity {
 
 
         switch (item.getItemId()) {
-            case R.id.about:
+            case R.id.about_start:
                 // get a reference to the already created main layout
                 LinearLayout mainLayout = (LinearLayout)
                         findViewById(R.id.start_main_layout);

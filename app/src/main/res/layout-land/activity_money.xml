@@ -4,9 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:id="@+id/money_layout"
-    android:background="#000"
+    android:background="#7c42bd"
     android:descendantFocusability="beforeDescendants"
-    android:focusableInTouchMode="true" >
+    android:focusableInTouchMode="true"
+    android:clipToPadding="false">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -24,6 +25,9 @@
         android:gravity="center"
         android:textColor="#fff"
         android:textColorHint="#fff"
+        android:background="#7c42bd"
+        android:shadowColor="#fff"
+        android:elevation="10dp"
         android:hint="Addition" />
 
     <Button
@@ -31,6 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:elevation="10dp"
         android:text="Add" />
 
     <Button
@@ -38,6 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:elevation="10dp"
         android:text="subtract" />
 
     <EditText
@@ -49,6 +55,9 @@
         android:gravity="center"
         android:textColor="#fff"
         android:textColorHint="#fff"
+        android:background="#7c42bd"
+        android:shadowColor="#fff"
+        android:elevation="10dp"
         android:hint="Subtraction" />
 
     </LinearLayout>
@@ -75,8 +84,11 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_gravity="center"
                 android:id="@+id/fragment_container"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:shadowColor="#fff"
+                android:elevation="10dp">
 
                 <FrameLayout
                     android:id="@+id/fragment"
