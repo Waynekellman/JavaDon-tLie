@@ -17,32 +17,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="#12005e">
+        android:background="#12005e"
+        android:elevation="10dp">
         <Button
             android:id="@+id/new_game"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="New Game"
+            android:elevation="10dp"
             android:layout_weight="1"/>
         <EditText
             android:id="@+id/new_game_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="New Game Name"
-            android:background="#fff"
-            android:textSize="14sp"
-            android:layout_weight="20"
+            android:hint="Game Name"
+            android:background="@drawable/rounded_edittext"
+            android:textSize="17sp"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:maxLines="1"
+            android:elevation="10dp"
             android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"/>
+            android:layout_marginEnd="5dp" />
         <EditText
             android:id="@+id/money_amount_start"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Enter Start Amount"
+            android:hint="Start Amount"
             android:inputType="number"
-            android:background="#fff"
-            android:textSize="14sp"
-            android:layout_weight="20"
+            android:layout_gravity="center"
+            android:background="@drawable/rounded_edittext"
+            android:textSize="17sp"
+            android:maxLines="1"
+            android:elevation="10dp"
+            android:layout_weight="2"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"/>
     </LinearLayout>

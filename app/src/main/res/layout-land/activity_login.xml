@@ -26,7 +26,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="15dp"
-        android:background="#fff"
+        android:background="@drawable/rounded_edittext"
+        android:elevation="10dp"
         android:hint="username" />
 
     <TextView
@@ -45,7 +46,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="15dp"
-        android:background="#fff"
+        android:background="@drawable/rounded_edittext"
+        android:elevation="10dp"
         android:hint="password"
         android:inputType="textPassword" />
 
@@ -56,6 +58,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="15dp"
         android:background="#fff"
+        android:elevation="10dp"
         android:text="Save Password" />
 
     <RelativeLayout
@@ -70,6 +73,7 @@
             android:layout_alignParentTop="true"
             android:layout_gravity="center_horizontal"
             android:layout_toStartOf="@+id/gotoRegister"
+            android:elevation="10dp"
             android:text="login" />
 
         <Button
@@ -80,6 +84,7 @@
             android:layout_alignParentTop="true"
             android:layout_gravity="center"
             android:layout_marginEnd="201dp"
+            android:elevation="10dp"
             android:text="Register" />
     </RelativeLayout>
 

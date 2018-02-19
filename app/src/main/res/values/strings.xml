@@ -4,5 +4,5 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="about_text">Create a new entry for a game or select an older game. The system will keep track of your money/lifepoints/score etc.</string>
-    <string name="about_text_money">You can add or subtract from the displayed value and the log button will display all previous transactions</string>
+    <string name="about_text_money">You can add or subtract from the displayed value and the log button will display all previous transactions with a timestamp</string>
 </resources>
