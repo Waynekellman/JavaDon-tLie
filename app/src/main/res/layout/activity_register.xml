@@ -22,8 +22,9 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="#fff"
+        android:background="@drawable/rounded_edittext"
         android:hint="username"
+        android:elevation="10dp"
         android:layout_marginBottom="15dp"/>
     <TextView
         android:layout_width="wrap_content"
@@ -38,9 +39,10 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="#fff"
+        android:background="@drawable/rounded_edittext"
         android:inputType="textPassword"
         android:hint="password"
+        android:elevation="10dp"
         android:layout_marginBottom="15dp"/>
     <Button
         android:id="@+id/submit"
@@ -48,6 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="create new login"
+        android:elevation="10dp"
         android:layout_marginBottom="15dp"
         android:layout_marginTop="15dp"/>
 
