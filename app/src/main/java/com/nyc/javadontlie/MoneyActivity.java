@@ -105,9 +105,9 @@ public class MoneyActivity extends AppCompatActivity {
                     logArrayList.add(0, timeStamp + " Player added: " + input.getText().toString());
                     game.setLog(logArrayList);
                     setAdapter();
-                    if (!game.getGameName().equals("")) {
-                        updateUser();
-                    }
+//                    if (!game.getGameName().equals("")) {
+//                        updateUser();
+//                    }
                     Log.d(TAG, logArrayList.get(logArrayList.size() - 1));
 
                     LogArrayModel logArrayModel = new LogArrayModel();
@@ -131,9 +131,9 @@ public class MoneyActivity extends AppCompatActivity {
                     logArrayList.add(0, timeStamp + " Player subtracted: " + output.getText().toString());
                     game.setLog(logArrayList);
                     setAdapter();
-                    if (!game.getGameName().equals("")) {
-                        updateUser();
-                    }
+//                    if (!game.getGameName().equals("")) {
+//                        updateUser();
+//                    }
                     Log.d(TAG, logArrayList.get(logArrayList.size() - 1));
 
                     LogArrayModel logArrayModel = new LogArrayModel();
@@ -181,6 +181,16 @@ public class MoneyActivity extends AppCompatActivity {
             thread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: called");
+
+        if (!game.getGameName().equals("")) {
+            updateUser();
         }
     }
 
