@@ -2,6 +2,7 @@ package com.nyc.javadontlie;
 
 import android.arch.persistence.room.Room;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,10 +31,6 @@ public class RegisterActivity extends AppCompatActivity {
         userName = findViewById(R.id.username);
         password = findViewById(R.id.password);
         submit = findViewById(R.id.submit);
-
-        db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "Users").build();
-
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -41,31 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
                     String userNameString = userName.getText().toString();
                     String passwordString = password.getText().toString();
                     newUser = new User(userNameString, passwordString);
-                    Thread thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-
-
-                            db.userDao().insertAll(newUser);
-                            userList = db.userDao().getAll();
-                            for (User users : userList) {
-                                Log.d(TAG, "onCreate: " + users.id + " " + users.getUserName());
-                            }
-                            if (db.userDao().getAll().size() == 0) {
-                                Log.d(TAG, "run: " + "List was deleted");
-                            } else {
-                                Log.d(TAG, "run: " + "List is still there");
-                            }
-
-
-                        }
-                    });
-                    thread.start();
-                    try {
-                        thread.join(5);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    new RegisterAsync().execute();
                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                     intent.putExtra("fromRegister", true);
                     startActivity(intent);
@@ -76,5 +49,32 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    public class RegisterAsync extends AsyncTask<Void,Void,Void> {
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            db.close();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            db = Room.databaseBuilder(getApplicationContext(),
+                    AppDatabase.class, "Users").build();
+
+            db.userDao().insertAll(newUser);
+            userList = db.userDao().getAll();
+            for (User users : userList) {
+                Log.d(TAG, "onCreate: " + users.id + " " + users.getUserName());
+            }
+            if (db.userDao().getAll().size() == 0) {
+                Log.d(TAG, "run: " + "List was deleted");
+            } else {
+                Log.d(TAG, "run: " + "List is still there");
+            }
+            return null;
+        }
     }
 }

@@ -18,19 +18,12 @@ public interface UserDao {
     @Query("SELECT * FROM user")
     List<User> getAll();
 
-    @Query("SELECT * FROM user WHERE id IN (:userIds)")
-    List<User> loadAllByIds(int[] userIds);
-
     @Query("SELECT * FROM user WHERE userName LIKE :userName AND "
             + "password LIKE :password LIMIT 1")
     User findByLogin(String userName, String password);
 
     @Query("SELECT * FROM user WHERE id LIKE :userIds  LIMIT 1")
     User findById(int userIds);
-
-
-    @Query("SELECT * FROM user WHERE gameList LIKE :gameListJson  LIMIT 1")
-    User findByGameList(String gameListJson);
 
     @Insert
     void insertAll(User... user);
