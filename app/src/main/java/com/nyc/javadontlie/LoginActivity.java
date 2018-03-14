@@ -3,6 +3,7 @@ package com.nyc.javadontlie;
 import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,9 +14,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.nyc.javadontlie.database.AppDatabase;
 import com.nyc.javadontlie.moneyModel.User;
+import com.nyc.javadontlie.roomDao.UserSingleton;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private CheckBox checkBox;
     private LinearLayout linearLayout;
+    private UserSingleton userSingleton;
 
 
     @Override
@@ -42,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
             userName.setText(savedInstanceState.getString("userName", null));
             password.setText(savedInstanceState.getString("password", null));
         }
+        userSingleton = UserSingleton.getInstance();
 
     }
 
@@ -76,17 +79,7 @@ public class LoginActivity extends AppCompatActivity {
             password.setText(passwordShared);
         }
 
-        db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "Users").build();
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                userList = db.userDao().getAll();
-                db.close();
-            }
-        });
-        thread.start();
-
+        new UserListAsyncTask().execute();
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,17 +100,8 @@ public class LoginActivity extends AppCompatActivity {
 
                     for (User user : userList) {
                         if (user.getUserName().equals(username) && user.getPassword().equals(passwordForLogin)) {
+                            userSingleton.setUser(user);
                             Intent intent = new Intent(LoginActivity.this, StartActivity.class);
-                            intent.putExtra("userName", username);
-                            intent.putExtra("password", passwordForLogin);
-                            if (checkBox.isChecked()) {
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.clear();
-                                editor.putBoolean("saveUserAndPass", true);
-                                editor.putString("userName", username);
-                                editor.putString("password", passwordForLogin);
-                                editor.commit();
-                            }
                             startActivity(intent);
                             notRegistered = false;
                             break;
@@ -140,5 +124,26 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         Log.d(TAG, "onResume: " + "loginActivity ran");
+    }
+
+
+    private class UserListAsyncTask extends AsyncTask<Void, Void, Void> {
+
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            db = Room.databaseBuilder(getApplicationContext(),
+                    AppDatabase.class, "Users").build();
+
+            userList = db.userDao().getAll();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            db.close();
+        }
     }
 }

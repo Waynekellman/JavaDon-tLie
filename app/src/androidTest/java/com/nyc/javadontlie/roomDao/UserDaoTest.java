@@ -7,6 +7,7 @@ import android.support.test.runner.AndroidJUnit4;
 import com.nyc.javadontlie.MoneyActivity;
 import com.nyc.javadontlie.RegisterActivity;
 import com.nyc.javadontlie.database.AppDatabase;
+import com.nyc.javadontlie.moneyModel.Games;
 import com.nyc.javadontlie.moneyModel.User;
 
 import org.junit.After;
@@ -54,7 +55,7 @@ public class UserDaoTest {
     }
 
     @Test
-    public void appToDatabase() {
+    public void addToDatabase() {
         List<User> userListBase = appDatabase.userDao().getAll();
         appDatabase.userDao().insertAll(new User());
         List<User> userListCheck = new ArrayList<>();
@@ -62,4 +63,47 @@ public class UserDaoTest {
         assertEquals(userListBase.size() + 1,userListCheck.size());
 
     }
+
+    @Test
+    public void deleteFromDatabase() {
+        appDatabase.userDao().insertAll(new User());
+        List<User> userListBase = appDatabase.userDao().getAll();
+        appDatabase.userDao().delete(userListBase.get(0));
+        List<User> userListCheck = appDatabase.userDao().getAll();
+        assertEquals(userListBase.size() - 1, userListCheck.size());
+    }
+
+    @Test
+    public void updateUserInDatabaseTest(){
+        User user = new User();
+        user.setUserName("FirstString");
+        user.setPassword("FirstString");
+        appDatabase.userDao().insertAll(user);
+        User user1 = appDatabase.userDao().findByLogin("FirstString","FirstString");
+        assertEquals(user.getUserName(),user1.getUserName());
+        user1.setUserName("SecondString");
+        appDatabase.userDao().updateUsers(user1);
+        User user2 = appDatabase.userDao().findById(user1.getId());
+        assertNotEquals(user.getUserName(),user2.getUserName());
+    }
+
+    @Test
+    public void findByLoginTest(){
+        User user = new User("Test1","Test1");
+        appDatabase.userDao().insertAll(user);
+        assertEquals(user.getUserName(),appDatabase.userDao().findByLogin("Test1","Test1").getUserName());
+    }
+
+    @Test
+    public void findById() {
+        User user = new User();
+        user.setUserName("Test2");
+        user.setPassword("Test2");
+        appDatabase.userDao().insertAll(user);
+        List<User> userList = appDatabase.userDao().getAll();
+        User user1 = userList.get(userList.size()-1);
+        User user2 = appDatabase.userDao().findById(user1.getId());
+        assertEquals(user1.getUserName(),user2.getUserName());
+    }
+
 }

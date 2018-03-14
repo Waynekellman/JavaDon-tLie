@@ -37,6 +37,6 @@ public class MoneyActivityTest {
 
         onView(withId(R.id.output_amount)).perform(typeText("10"), closeSoftKeyboard());
         onView(withId(R.id.output_enter)).perform(click());
-        onView(withId(R.id.money_amount)).check(matches(withText("-10")));
+        onView(withId(R.id.money_amount)).check(matches(withText("0")));
     }
 }

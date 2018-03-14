@@ -1,9 +1,8 @@
 package com.nyc.javadontlie;
 
 import android.arch.persistence.room.Room;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,18 +21,16 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.nyc.javadontlie.database.AppDatabase;
 import com.nyc.javadontlie.moneyModel.Games;
 import com.nyc.javadontlie.moneyModel.LogArrayModel;
 import com.nyc.javadontlie.moneyModel.User;
+import com.nyc.javadontlie.roomDao.UserSingleton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import io.fotoapparat.view.CameraView;
 
 public class MoneyActivity extends AppCompatActivity {
     private final String TAG = "MoneyActivity";
@@ -41,20 +38,15 @@ public class MoneyActivity extends AppCompatActivity {
     private EditText input, output;
     private TextView amount;
     private Button inputEnter, outputEnter;
-    private String gameName, userName, password;
+    private String userName, password;
     private int amountMoney;
     private ArrayList<String> logArrayList;
-    private Bundle bundle;
     private FrameLayout frameLayout;
     LoggingFragment fragment;
-    private Intent intent;
-    private CameraView cameraView;
     private Games game;
     private User user;
     private AppDatabase db;
-    private SharedPreferences sharedPreferences;
     private int gameIndexInList;
-    private String gameJson;
     private MediaPlayer fxPlayer;
 
     @Override
@@ -62,14 +54,6 @@ public class MoneyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_money);
 
-        intent = getIntent();
-        if (savedInstanceState != null) {
-            gameIndexInList = savedInstanceState.getInt("gameIndex", intent.getIntExtra("gameIndex", -1));
-            gameJson = savedInstanceState.getString("newGame");
-        } else {
-            gameIndexInList = intent.getIntExtra("gameIndex", -1);
-            gameJson = intent.getStringExtra("newGame");
-        }
     }
 
     @Override
@@ -85,11 +69,6 @@ public class MoneyActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if ( intent.getIntExtra("gameIndex", -1) != -1){
-
-            outState.putInt("gameIndex",intent.getIntExtra("gameIndex", -1));
-            outState.putString("newGame",intent.getStringExtra("newGame"));
-        }
     }
 
     private void implementOnClicks() {
@@ -104,10 +83,7 @@ public class MoneyActivity extends AppCompatActivity {
                     String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
                     logArrayList.add(0, timeStamp + " Player added: " + input.getText().toString());
                     game.setLog(logArrayList);
-                    setAdapter();
-//                    if (!game.getGameName().equals("")) {
-//                        updateUser();
-//                    }
+                    setLogFragAdapter();
                     Log.d(TAG, logArrayList.get(logArrayList.size() - 1));
 
                     LogArrayModel logArrayModel = new LogArrayModel();
@@ -130,10 +106,7 @@ public class MoneyActivity extends AppCompatActivity {
                     String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
                     logArrayList.add(0, timeStamp + " Player subtracted: " + output.getText().toString());
                     game.setLog(logArrayList);
-                    setAdapter();
-//                    if (!game.getGameName().equals("")) {
-//                        updateUser();
-//                    }
+                    setLogFragAdapter();
                     Log.d(TAG, logArrayList.get(logArrayList.size() - 1));
 
                     LogArrayModel logArrayModel = new LogArrayModel();
@@ -161,27 +134,7 @@ public class MoneyActivity extends AppCompatActivity {
     }
 
     public void updateUser() {
-        List<Games> gamesList = user.getGameList();
-        gamesList.remove(gameIndexInList);
-        gamesList.add(gameIndexInList, game);
-
-        db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "Users").build();
-        user.setGameList(gamesList);
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                db.userDao().updateUsers(user);
-                user = db.userDao().findByLogin(userName, password);
-                db.close();
-            }
-        });
-        thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        new UpdateUserListAsync().execute();
     }
 
     @Override
@@ -194,7 +147,7 @@ public class MoneyActivity extends AppCompatActivity {
         }
     }
 
-    private void setAdapter() {
+    private void setLogFragAdapter() {
         if (frameLayout.getVisibility() == View.VISIBLE) {
             if (fragment != null) {
                 fragment.setAdapter(logArrayList);
@@ -204,23 +157,11 @@ public class MoneyActivity extends AppCompatActivity {
     }
 
     private void setFields() {
-
-        sharedPreferences = getApplicationContext().getSharedPreferences("UserData", MODE_PRIVATE);
-        if (sharedPreferences.getString("userName", null) != null) {
-            userName = sharedPreferences.getString("userName", null);
-            password = sharedPreferences.getString("password", null);
-        }
-        if (sharedPreferences.getString("GamesName", null) != null) {
-            gameName = sharedPreferences.getString("GamesName", null);
-        } else {
-            gameName = intent.getStringExtra("GameName");
-        }
-
-        logArrayList = new ArrayList<>();
-        game = new Gson().fromJson(gameJson, Games.class);
-        if (game == null) {
-            game = new Games("",0);
-        }
+        user = UserSingleton.getInstance().getUser();
+        gameIndexInList = UserSingleton.getInstance().getIndexInList();
+        userName = user.getUserName();
+        password = user.getPassword();
+        game = UserSingleton.getInstance().getGame();
         logArrayList = game.getLog();
         input = findViewById(R.id.input_amount);
         output = findViewById(R.id.output_amount);
@@ -228,32 +169,12 @@ public class MoneyActivity extends AppCompatActivity {
         inputEnter = findViewById(R.id.input_enter);
         outputEnter = findViewById(R.id.output_enter);
         frameLayout = findViewById(R.id.fragment_container);
-        bundle = new Bundle();
-        bundle.putString(Constants.LOGGING_FRAG_KEY, gameName);
-
-        db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "Users").build();
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                user = db.userDao().findByLogin(userName, password);
-                db.close();
-            }
-        });
-        thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
 
     }
 
     private void setFragment() {
         fragment = new LoggingFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        fragment.setArguments(bundle);
         transaction.replace(R.id.fragment, fragment);
         transaction.commit();
     }
@@ -321,6 +242,38 @@ public class MoneyActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private class UpdateUserListAsync extends AsyncTask<Void,Void,Void> {
+
+        private List<Games> gamesList;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            gamesList = user.getGameList();
+            gamesList.remove(gameIndexInList);
+            gamesList.add(gameIndexInList, game);
+            user.setGameList(gamesList);
+            db = Room.databaseBuilder(getApplicationContext(),
+                    AppDatabase.class, "Users").build();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            db.userDao().updateUsers(user);
+            user = db.userDao().findByLogin(userName, password);
+            UserSingleton.getInstance().setUser(user);
+            Log.d(TAG, "doInBackground: called");
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            db.close();
+
         }
     }
 }
