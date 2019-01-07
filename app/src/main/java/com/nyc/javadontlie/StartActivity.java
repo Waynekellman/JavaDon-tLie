@@ -65,7 +65,7 @@ public class StartActivity extends AppCompatActivity {
                 user = UserSingleton.getInstance().getUser();
                 if (!newGameName.getText().toString().equals("") && !moneyAmount.getText().toString().equals("")) {
                     Boolean notCopy = true;
-                    gamesList = UserSingleton.getInstance().getUser().getGameList();
+                    gamesList = user.getGameList() != null ? user.getGameList() : new ArrayList<>();
                     for (Games g : gamesList) {
                         if (g.getGameName().equals(newGameName.getText().toString())) {
                             notCopy = false;

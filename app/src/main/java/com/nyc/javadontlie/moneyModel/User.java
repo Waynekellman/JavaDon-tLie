@@ -2,6 +2,7 @@ package com.nyc.javadontlie.moneyModel;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.Update;
 
@@ -30,6 +31,7 @@ public class User {
     @ColumnInfo(name = "gameList")
     public String gameListJson;
 
+    @Ignore
     public User(String userName, String password) {
         this.userName = userName;
         this.password = password;
